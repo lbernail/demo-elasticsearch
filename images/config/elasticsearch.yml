@@ -1,0 +1,20 @@
+#################################### Cluster ###################################
+cluster.name: "##CLUSTER##"
+
+##################################### Node #####################################
+node.name: "##NODE_NAME##"
+node.master: ##MASTER##
+node.data: ##DATA##
+node.zone: "##ZONE##"
+http.enabled: ##HTTP##
+
+##################################### Index ####################################
+index.number_of_shards: ##SHARDS##
+index.number_of_replicas: ##REPLICAS##
+
+##################################### Routing ##################################
+cluster.routing.allocation.allow_rebalance: "always"
+cluster.routing.allocation.awareness.attributes: "zone"
+
+##################################### Discovery ################################
+discovery.zen.minimum_master_nodes: ##MIN_MASTERS##

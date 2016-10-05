@@ -1,0 +1,74 @@
+{
+    "variables": {
+        "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+        "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+        "source_ami"    : "",
+        "build_subnet"  : "",
+        "build_vpc"     : "",
+        "build_sg"      : "",
+        "ssh_private"   : "false",
+        "public_ip"     : "true",
+
+        "project"       : "",
+        "java_version"  : "",
+        "es_version"    : ""
+    },
+    "builders": [{
+        "type": "amazon-ebs",
+        "access_key": "{{user `aws_access_key`}}",
+        "secret_key": "{{user `aws_secret_key`}}",
+        "source_ami": "{{user `source_ami`}}",
+        "region": "eu-west-1",
+        "instance_type": "t2.medium",
+        "launch_block_device_mappings": [
+          {
+            "device_name": "/dev/xvda",
+            "volume_size": "10",
+            "volume_type": "gp2",
+            "delete_on_termination": true
+          }
+        ],
+        "subnet_id": "{{user `build_subnet`}}",
+        "vpc_id": "{{user `build_vpc`}}",
+        "security_group_id": "{{user `build_sg`}}",
+        "ssh_username": "admin",
+        "ssh_private_ip": "{{user `ssh_private`}}",
+        "ssh_timeout": "120s",
+        "ami_name": "{{user `project`}}-{{isotime \"2006-01-02T15-04-05\"}}",
+        "tags" : {
+            "Name" : "{{user `project`}}"
+        }
+    }],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sleep 10"
+            ]
+        },
+        {
+            "type": "file",
+            "source": "files/cloud.cfg",
+            "destination": "/tmp/cloud.cfg"
+        },
+        {
+            "type": "shell",
+            "scripts": ["scripts/install_java.sh","scripts/install_es.sh","scripts/install_es_plugins.sh"],
+            "execute_command": "{{ .Vars }} sudo -E sh '{{ .Path }}'",
+            "environment_vars": [
+                "JAVA_VERSION={{user `java_version`}}",
+                "ES_VERSION={{user `es_version`}}"
+            ]
+        },
+        {
+            "type": "file",
+            "source": "config",
+            "destination": "/tmp/config"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/config_es.sh",
+            "execute_command": "{{ .Vars }} sudo -E sh '{{ .Path }}'"
+        }
+    ]
+}

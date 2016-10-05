@@ -1,0 +1,10 @@
+{
+    "source_ami": "ami-ff0e758c",
+    "build_subnet": "",
+    "build_vpc": "",
+    "build_sg": "",
+
+    "project" : "elasticsearch",
+    "java_version" : "8u45-b14",
+    "es_version" : "1.6"
+}

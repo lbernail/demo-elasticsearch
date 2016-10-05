@@ -1,0 +1,10 @@
+curl -XPUT 'http://192.168.99.100:9200/test/' -d '{
+    "settings" : {
+        "index" : {
+            "number_of_shards" : 5,
+            "number_of_replicas" : 1
+        }
+    }
+}'
+
+curl -XPUT 'http://192.168.99.100:9200/test/user/laurent' -d '{ "name" : "Laurent Bernaille" }'

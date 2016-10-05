@@ -1,0 +1,88 @@
+datanode1:
+    image: d2si/elasticsearch
+    environment:
+        - ES_CLUSTER=aso
+        - ES_ZONE=zone1
+        - ES_HEAP_SIZE=1g
+        - ES_MASTER=false
+        - ES_DATA=true
+        - ES_HTTP=false
+        - ES_MIN_MASTERS=2
+    expose:
+        - 9300
+
+datanode2:
+    image: d2si/elasticsearch
+    environment:
+        - ES_CLUSTER=aso
+        - ES_ZONE=zone2
+        - ES_HEAP_SIZE=1g
+        - ES_MASTER=false
+        - ES_DATA=true
+        - ES_HTTP=false
+        - ES_MIN_MASTERS=2
+    expose:
+        - 9300
+
+masternode1:
+    image: d2si/elasticsearch
+    environment:
+        - ES_CLUSTER=aso
+        - ES_NODE_NAME=master1
+        - ES_ZONE=zone1
+        - ES_HEAP_SIZE=512m
+        - ES_MASTER=true
+        - ES_DATA=false
+        - ES_HTTP=false
+        - ES_MIN_MASTERS=2
+    expose:
+        - 9300
+
+masternode2:
+    image: d2si/elasticsearch
+    environment:
+        - ES_CLUSTER=aso
+        - ES_NODE_NAME=master2
+        - ES_ZONE=zone1
+        - ES_HEAP_SIZE=512m
+        - ES_MASTER=true
+        - ES_DATA=false
+        - ES_HTTP=false
+        - ES_MIN_MASTERS=2
+    expose:
+        - 9300
+
+clientnode1:
+    image: d2si/elasticsearch
+    environment:
+        - ES_CLUSTER=aso
+        - ES_NODE_NAME=client1
+        - ES_ZONE=zone1
+        - ES_HEAP_SIZE=512m
+        - ES_MASTER=false
+        - ES_DATA=false
+        - ES_HTTP=true
+        - ES_MIN_MASTERS=2
+    expose:
+        - 9200
+        - 9300
+    ports:
+        - 9200:9200
+
+clientnode2:
+    image: d2si/elasticsearch
+    environment:
+        - ES_CLUSTER=aso
+        - ES_NODE_NAME=client2
+        - ES_ZONE=zone2
+        - ES_HEAP_SIZE=512m
+        - ES_MASTER=false
+        - ES_DATA=false
+        - ES_HTTP=true
+        - ES_MIN_MASTERS=2
+    expose:
+        - 9200
+        - 9300
+    ports:
+        - 9201:9200
+

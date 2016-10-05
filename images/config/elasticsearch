@@ -1,0 +1,8 @@
+################################
+# Elasticsearch
+################################
+
+ES_HEAP_SIZE=##ES_HEAP_SIZE##
+MAX_OPEN_FILES=65535
+
+JAVA_HOME=/opt/java
